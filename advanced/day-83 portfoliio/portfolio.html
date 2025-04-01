@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anirban Sarkar | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-primary: #0ff;
+            --neon-secondary: #f0f;
+            --neon-text: #fff;
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-dark);
+            color: var(--neon-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-darker);
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: neonFlicker 1.5s infinite alternate;
+            text-shadow: 
+                0 0 7px var(--neon-primary),
+                0 0 10px var(--neon-primary),
+                0 0 21px var(--neon-primary),
+                0 0 42px var(--neon-primary);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--neon-secondary);
+            text-shadow: 
+                0 0 7px var(--neon-secondary),
+                0 0 10px var(--neon-secondary);
+        }
+
+        nav {
+            background: rgba(10, 10, 10, 0.9);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+            padding: 10px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--neon-primary);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px var(--neon-primary);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--neon-text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background: var(--neon-primary);
+            color: var(--bg-dark);
+            box-shadow: 0 0 10px var(--neon-primary);
+        }
+
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--neon-primary);
+            text-shadow: 0 0 10px var(--neon-primary);
+        }
+
+        #about p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #projects ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        #projects li {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        #projects li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+
+        #contact p {
+            margin: 1rem 0;
+        }
+
+        #contact a {
+            color: var(--neon-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        #contact a:hover {
+            text-shadow: 0 0 10px var(--neon-primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-darker);
+        }
+
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow:
+                    0 0 7px var(--neon-primary),
+                    0 0 10px var(--neon-primary),
+                    0 0 21px var(--neon-primary),
+                    0 0 42px var(--neon-primary);
+            }
+            20%, 22%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background: rgba(5, 5, 5, 0.95);
+                transition: all 0.5s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 6px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -5px);
+            }
+
+            nav li {
+                margin: 1.5rem 0;
+            }
+
+            section {
+                padding: 2rem 1rem;
+            }
+
+            #projects ul {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background: var(--neon-primary);
+            color: var(--bg-dark);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Anirban Sarkar</h1>
+        <p>Web Developer | Python Enthusiast | Machine Learning & AI Expert</p>
+    </header>
+    
+    <nav>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    
+    <section id="about">
+        <h2>About Me</h2>
+        <p>I am a passionate web developer with experience in Flask, Django, Python, and full stack technologies & created many projects on machine learning and AI.</p>
+    </section>
+    
+    <section id="projects">
+        <h2>Projects</h2>
+        <ul>
+            <li>Library Management System - A Flask-based system for managing book transactions.</li>
+            <li>Blogging Website - A full-stack blog platform built using Flask and SQLite.</li>
+            <li>AI Image Classifier - Using CNN and many AI tools.</li>
+        </ul>
+    </section>
+    
+    <section id="contact">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:anirbansarkar.slg18@gmail.com">anirbansarkar.slg18@gmail.com</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/anirban-sarkar-4b080925a/" target="_blank">Your Profile</a></p>
+        <p>GitHub: <a href="https://github.com/anantacoder" target="_blank">Your GitHub</a></p>
+    </section>
+    
+    <footer>
+        <p>&copy; 2025 Anirban Sarkar. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('nav ul');
+        const navLinks = document.querySelectorAll('nav a');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

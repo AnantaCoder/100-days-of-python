@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jinja </title>
+</head>
+<body>
+    <h1>
+        {{5*6}}
+    </h1>
+    <h1>
+        random number : {{num}}
+    </h1>
+    <a href="{{ url_for('getblog', num=3) }}">go to blog {{num}} </a>
+    <button type="button" ><a href="{{ url_for('getblog', num=3) }}">this is a button</a></button>
+    <footer>This website is &copy; by Anirban @{{year}}</footer>
+</body>
+</html>

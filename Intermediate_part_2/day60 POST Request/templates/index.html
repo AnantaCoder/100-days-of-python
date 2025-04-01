@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Link to favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<title>Send Message </title>
+</head>
+<body>
+	<div class="container">
+		<div class="screen">
+			<div class="screen__content">
+				<h1 style="text-align: center; padding: 15px;">Contact Form</h1>
+				<h4 style="text-align: center;">Fill this form I will get back to you asap!</h4>
+				<form class="login" action="/" method="POST">
+					<div class="login__field" >
+						<i class="login__icon fa fa-user"></i>
+						<input name="name" type="text" class="login__input" placeholder="User name ">
+					</div>
+					<div class="login__field">
+						<i class="login__icon fa fa-envelope"></i>
+						<input name="email" type="email" class="login__input" placeholder="Email">
+					</div>
+					<div class="login__field">
+						<i class="login__icon fa fa-phone"></i>
+						<input type="text" name="phone" class="login__input" placeholder="Phone">
+					</div>
+					<div class="login__field">
+						<i class="login__icon fa fa-envelope"></i>
+						<input type="text" name="message" class="login__input" placeholder="Message">
+					</div>
+					<button class="button login__submit" type="submit" onclick="myalert()">
+						<span  class="button__text">Send Now</span>
+						<i class="button__icon fa fa-chevron-right"></i>
+					</button>				
+				</form>
+				<div class="social-login">
+					<h3>log in via</h3>
+					<div class="social-icons">
+						<a href="#" class="social-login__icon fa fa-instagram"></a>
+						<a href="#" class="social-login__icon fa fa-facebook"></a>
+						<a href="#" class="social-login__icon fa fa-twitter"></a>
+					</div>
+				</div>
+			</div>
+			<div class="screen__background">
+				<span class="screen__background__shape screen__background__shape4"></span>
+				<span class="screen__background__shape screen__background__shape3"></span>		
+				<span class="screen__background__shape screen__background__shape2"></span>
+				<span class="screen__background__shape screen__background__shape1"></span>
+			</div>		
+		</div>
+	</div>
+	<script>
+		function myalert(){
+			alert("Message sent successfully to the Admin")
+		}
+	</script>
+</body>
+</html>

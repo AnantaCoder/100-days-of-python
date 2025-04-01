@@ -1,0 +1,55 @@
+# General Python ignores
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+.eggs/
+dist/
+build/
+venv/
+.env
+
+# Flask/Django specific
+instance/
+*.log
+*.sqlite3
+db.sqlite3
+migrations/
+media/
+staticfiles/
+*.pot
+*.pyc
+config.json
+
+# Django specific
+*.mo
+__pycache__/
+settings.py
+
+# Node.js specific
+node_modules/
+npm-debug.log
+yarn-error.log
+.pnpm-debug.log
+.next/
+.nuxt/
+.vscode/
+.DS_Store
+
+# Environment variables
+.env*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.iml
+
+# OS-specific files
+Thumbs.db
+.DS_Store

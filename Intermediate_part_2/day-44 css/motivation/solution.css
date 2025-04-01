@@ -1,0 +1,26 @@
+body {
+  background:linear-gradient(45deg, red , blue);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  max-height: 100%;
+}
+h1 {
+  text-transform: uppercase;
+  font-size: 3rem;
+}
+
+.poster {
+  width: 50%;
+  height: 100%;
+  margin-left: 25%;
+  margin-top: 100px;
+  color: white;
+  font-family: "Libre Baskerville", serif;
+  text-align: center;
+}
+
+.motivation-img {
+  border: 5px solid white;
+  width: 100%;
+}
