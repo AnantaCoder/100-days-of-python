@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Audiobook Converter</title>
+    <style>
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
+            --neon-green: #39ff14;
+            --neon-purple: #bc13fe;
+            --dark-bg: #0f0f1a;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #fff;
+            background-color: #131318;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 
+                0 0 5px var(--neon-blue),
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-blue);
+        }
+        
+        .container {
+            background-color: rgba(20, 20, 35, 0.8);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 
+                0 0 20px rgba(255, 0, 255, 0.3),
+                0 0 40px rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
+            color: var(--neon-green);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        .file-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--neon-blue);
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .file-input:hover {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        .submit-btn {
+            background-color: transparent;
+            color: var(--neon-green);
+            border: 2px solid var(--neon-green);
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 5px var(--neon-green);
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--neon-green);
+            color: #000;
+            box-shadow: 
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green);
+            transform: scale(1.05);
+        }
+        
+        .error {
+            color: #ff2d2d;
+            padding: 15px;
+            background-color: rgba(231, 76, 60, 0.2);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff2d2d;
+        }
+        
+        .audio-container {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 10px var(--neon-purple);
+        }
+        
+        .audio-container h2 {
+            color: var(--neon-purple);
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px var(--neon-purple);
+        }
+        
+        .instructions {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--neon-blue);
+        }
+        
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+        
+        audio {
+            width: 100%;
+            filter: sepia(20%) saturate(70%) grayscale(30%) contrast(99%) invert(12%);
+            margin-bottom: 15px;
+        }
+        
+        a {
+            color: var(--neon-pink);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            padding: 8px 20px;
+            border: 1px solid var(--neon-pink);
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+        
+        a:hover {
+            background-color: var(--neon-pink);
+            color: #000;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .loading-screen.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid transparent;
+            border-top-color: var(--neon-blue);
+            border-right-color: var(--neon-pink);
+            border-bottom-color: var(--neon-green);
+            border-left-color: var(--neon-purple);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            box-shadow: 
+                0 0 15px var(--neon-blue),
+                0 0 15px var(--neon-pink),
+                0 0 15px var(--neon-green),
+                0 0 15px var(--neon-purple);
+        }
+        
+        .loading-text {
+            margin-top: 30px;
+            font-weight: bold;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 
+                0 0 5px var(--neon-blue),
+                0 0 10px var(--neon-pink);
+        }
+
+        /* Progress percentage */
+        .progress-percentage {
+            font-size: 48px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: var(--neon-green);
+            text-shadow: 
+                0 0 5px var(--neon-green),
+                0 0 10px var(--neon-green);
+        }
+        
+        /* Progress bar styles */
+        .progress-container {
+            width: 250px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            border-radius: 6px;
+            box-shadow: 
+                0 0 5px var(--neon-blue),
+                0 0 10px var(--neon-purple);
+            transition: width 0.3s ease;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Make sure html takes full viewport height */
+        html {
+            height: 100%;
+            background-color: #131318;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>PDF to Audiobook Converter</h1>
+        
+        <div class="instructions">
+            <p>Upload a PDF file, and this tool will convert the text to speech.</p>
+        </div>
+        
+        {% if error %}
+        <div class="error">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+        
+        <form action="/" method="POST" enctype="multipart/form-data" onsubmit="showLoading()">
+            <div class="form-group">
+                <label for="file">Select PDF File:</label>
+                <input type="file" id="file" name="file" accept=".pdf" class="file-input" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="submit-btn">Convert to Speech</button>
+            </div>
+        </form>
+        
+        {% if speech %}
+        <div class="audio-container">
+            <h2>Generated Speech</h2>
+            <audio controls>
+                <source src="data:audio/wav;base64,{{ speech }}" type="audio/wav">
+                Your browser does not support the audio element.
+            </audio>
+            <p><a id="download-link" href="data:audio/wav;base64,{{ speech }}" download="speech.wav">Download Audio</a></p>
+        </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>PDF to Audiobook Converter &copy; 2025</p>
+    </footer>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <div class="loading-text">Converting...</div>
+        <div class="progress-percentage" id="progressPercentage">0%</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <script>
+        function showLoading() {
+            document.getElementById("loadingScreen").classList.add("show");
+            simulateProgress();
+        }
+        
+        function simulateProgress() {
+            let progress = 0;
+            const progressBar = document.getElementById("progressBar");
+            const progressPercentage = document.getElementById("progressPercentage");
+            
+            const interval = setInterval(() => {
+                if (progress < 70) {
+                    progress += Math.random() * 5;
+                } else if (progress < 90) {
+                    progress += Math.random() * 1.5;
+                } else if (progress < 98) {
+                    progress += 0.3;
+                }
+                
+                progress = Math.min(progress, 98);
+                
+                const displayProgress = Math.round(progress);
+                progressBar.style.width = displayProgress + "%";
+                progressPercentage.textContent = displayProgress + "%";
+                
+            }, 300);
+            
+            // Store interval for potential clearing
+            window.progressInterval = interval;
+            
+           
+        }
+        
+        // This would be called when processing is complete
+        function completeProgress() {
+            clearInterval(window.progressInterval);
+            document.getElementById("progressBar").style.width = "100%";
+            document.getElementById("progressPercentage").textContent = "100%";
+            
+            // Optional: add a slight delay before hiding the loading screen
+            setTimeout(() => {
+                document.getElementById("loadingScreen").classList.remove("show");
+            }, 500);
+        }
+    </script>
+
+</body>
+</html>

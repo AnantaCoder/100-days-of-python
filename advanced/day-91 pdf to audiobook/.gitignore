@@ -1,0 +1,10 @@
+# Temporary files
+temp/
+
+# Virtual environments
+venv/
+env/
+
+# Python byte code
+__pycache__/
+*.py[cod]
