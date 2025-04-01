@@ -1,4 +1,3 @@
-# In converter.py
 from pdfminer.high_level import extract_text
 import re
 import unicodedata
@@ -6,8 +5,8 @@ import unicodedata
 def pdf_to_text(pdf_path):
     """Extract text from a PDF file using pdfminer.six."""
     try:
-        text = extract_text(pdf_path)  # Use pdfminer.six for better extraction
-        text = clean_text(text)        # Clean the extracted text
+        text = extract_text(pdf_path)  
+        text = clean_text(text)        
         return text
     except Exception as e:
         print(f"Error extracting text: {e}")

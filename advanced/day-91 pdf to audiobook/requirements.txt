@@ -1,4 +1,4 @@
 Flask==3.1.0
 PyPDF2==3.0.1
-gTTS==2.5.4
-pydub==0.25.1
+pdfminer
+edge-tts==7.0.0
