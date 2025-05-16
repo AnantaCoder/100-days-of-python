@@ -1,56 +1,176 @@
-# General Python ignores
+
+# PYTHON IGNORES
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-*.egg-info/
-.eggs/
-dist/
 build/
-venv/
-.env
-env/
+dist/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# Flask/Django specific
-instance/
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# WEB FRAMEWORKS
+# Django specific
 *.log
-*.sqlite3
+local_settings.py
 db.sqlite3
+db.sqlite3-journal
+*.mo
+*.pot
+settings.py
 migrations/
 media/
 staticfiles/
-*.pot
-*.pyc
-config.json
 
-# Django specific
-*.mo
-__pycache__/
-settings.py
+# Flask specific
+instance/
+.webassets-cache
 
-# Node.js specific
+# Other web frameworks
+.scrapy
+.next/
+.nuxt/
+
+# JAVASCRIPT / NODE.JS
 node_modules/
 npm-debug.log
 yarn-error.log
 .pnpm-debug.log
-.next/
-.nuxt/
-.vscode/
-.DS_Store
 
-# Environment variables
+# DOCUMENTATION & TOOLING
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Package managers
+.pdm.toml
+.pdm-python
+.pdm-build/
+
+# PEP 582
+__pypackages__/
+
+# ENVIRONMENTS & LOGS
+# Environment directories
 .env*
 !.env.example
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
 # Logs
 logs/
 *.log
 
-# IDE and editor settings
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# IDE & EDITORS
+# VS Code
 .vscode/
+
+# JetBrains / PyCharm
 .idea/
 *.iml
 
-# OS-specific files
-Thumbs.db
+# Other code editors
+.spyderproject
+.spyproject
+.ropeproject
+
+# TYPE CHECKING & LINTING
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# pytype
+.pytype/
+
+# Ruff
+.ruff_cache/
+
+# Cython
+cython_debug/
+
+# MISCELLANEOUS
+# OS specific files
 .DS_Store
+Thumbs.db
+
+# SageMath
+*.sage.py
+
+# mkdocs
+/site
+
+# Cursor AI editor
+.cursorignore
+.cursorindexingignore
+
+# PyPI configuration
+.pypirc
