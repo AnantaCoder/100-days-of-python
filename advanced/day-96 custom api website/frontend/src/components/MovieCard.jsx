@@ -23,15 +23,27 @@ function MovieCard() {
       });
   };
 
+  const clearMovies = () => {
+    setMovies([]);
+    setError(null);
+  };
+
   return (
     <>
-      <div className="text-center mb-6">
+      <div className="text-center mb-6 ">
         <button
           onClick={fetchMovies}
           className="bg-yellow-400 cursor-pointer hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg transition"
         >
           {loading ? "Fetch Movies 🍿" : "Loading ..."}
         </button>
+
+        {(movies.length > 0 || error) && (
+          <button
+            onClick={clearMovies}
+            className="bg-red-400 cursor-pointer m-1 hover:bg-green-500 text-black font-bold py-2 px-4 rounded-lg transition"
+          >Clear ALL</button>
+        )}
       </div>
 
       {error && (
