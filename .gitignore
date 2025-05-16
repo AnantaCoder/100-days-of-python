@@ -9,6 +9,7 @@ dist/
 build/
 venv/
 .env
+env/
 
 # Flask/Django specific
 instance/
