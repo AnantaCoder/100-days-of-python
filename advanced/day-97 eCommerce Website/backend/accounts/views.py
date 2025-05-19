@@ -1,17 +1,18 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model,authenticate
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
+from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from rest_framework import status, generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken,TokenError
 from .serializers import (
     RegisterSerializer, UserSerializer, EmailVerificationSerializer,
-    OTPVerificationSerializer, RequestOTPSerializer
+    OTPVerificationSerializer, RequestOTPSerializer 
 )
 from .models import OTP
 
@@ -19,13 +20,14 @@ User = get_user_model()
 
 class RegisterView(generics.CreateAPIView):
     
-    serializer_class = RegisterSerializer
+    serializer_class = RegisterSerializer #serializer class
     permission_classes = [permissions.AllowAny]
     
     def create(self, request, *args, **kwargs):
         
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
         try:
             user = serializer.save()
             self.send_verification_email(user)
@@ -43,10 +45,12 @@ class RegisterView(generics.CreateAPIView):
         try:
             token = default_token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
-            verification_link = f"{settings.FRONTEND_URL}/verify-email/?uid={uid}&token={token}"
+            verification_link = f"http://127.0.0.1:8000/api/auth/verify-email/?uid={uid}&token={token}"
+            # verification_link = f"{settings.FRONTEND_URL}/verify-email/?uid={uid}&token={token}"
+            print(f"verification mail is :{verification_link} ")
         
             send_mail(
-            subject="Verify Your Email",
+            subject="Verify Your Email \n",
             message=f"Please click the link to verify your email: {verification_link}",
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[user.email],
@@ -63,9 +67,15 @@ class VerifyEmailView(APIView):
     permission_classes = [permissions.AllowAny]
     
     def get(self, request):
-        uid = request.query_params.get('uid')
-        token = request.query_params.get('token')
+        serializer = EmailVerificationSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)  # Will auto-validate the token field
         
+        token = serializer.validated_data['token']
+        uid = request.query_params.get('uid')  # Still need to handle uid separately
+        
+        
+            
+            
         if not uid or not token:
             return Response({"detail": "Missing parameters."}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -172,7 +182,73 @@ class VerifyOTPView(APIView):
 class UserDetailView(generics.RetrieveAPIView):
     
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated] permission class is default . 
     
     def get_object(self):
         return self.request.user
+    
+    
+class LoginView(APIView):
+    
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email', '')
+        password = request.data.get('password', '')
+
+        user = authenticate(request, username=email, password=password)
+
+        if user is not None:
+            user.last_login = timezone.now()
+            user.save(update_fields=['last_login'])
+            refresh = RefreshToken.for_user(user)
+            response_data = {
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'user': {
+                    'id': user.id,
+                    'email': user.email,
+                },
+                'message': 'Login successful',
+                'status': 'success'
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        else:
+            try:
+                user = User.objects.get(email=email)
+                if user.check_password(password):
+                    return Response(
+                        {"detail": "Account is not active. Please verify your email."},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
+                else:
+                    return Response(
+                        {"detail": "Invalid credentials."},
+                        status=status.HTTP_401_UNAUTHORIZED
+                    )
+            except User.DoesNotExist:
+                return Response(
+                    {"detail": "Invalid credentials."},
+                    status=status.HTTP_401_UNAUTHORIZED
+                )
+                
+                
+class UserUpdateView(generics.UpdateAPIView):
+    serializer_class = UserSerializer
+    
+    def get_object(self):
+        return self.request.user
+    
+    
+class LogoutView(APIView):
+    
+    def post(self,request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({"detail": "Logout successful."}, status=status.HTTP_205_RESET_CONTENT)
+        except KeyError:
+            return Response({"detail": "Refresh token not provided."}, status=status.HTTP_400_BAD_REQUEST)
+        except TokenError as e:
+            return Response({"detail": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
